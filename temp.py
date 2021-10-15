@@ -1,7 +1,7 @@
 import cv2
 import hand_detector
 
-detector = hand_detector.hand_detection(max_hands=4,draw=True)
+detector = hand_detector.hand_detection(max_hands=4, draw=True)
 
 camera = cv2.VideoCapture(0)
 

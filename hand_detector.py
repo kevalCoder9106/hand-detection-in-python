@@ -3,7 +3,8 @@ import mediapipe as mp
 
 
 class hand_detection:
-    def __init__(self, mode=False, max_hands=2, detection_confidence=0.5, tracking_confidence=0.5, draw=False, give_data=True):
+    def __init__(self, mode=False, max_hands=2, detection_confidence=0.5, tracking_confidence=0.5, draw=False,
+                 give_data=True):
         self.mode = mode
         self.maxHands = max_hands
         self.detectionConfidence = detection_confidence
@@ -24,7 +25,9 @@ class hand_detection:
         results = self.hands.process(frame_rgb)
 
         if results.multi_hand_landmarks:
-            for handLms in results.multi_hand_landmarks:
+            # print(results.multi_hand_landmarks)
+            # print("###########################")
+            for handLms in results.multi_hand_landmarks:  # looping to hand
                 if self.giveData:
                     self.give_hand_data(frame, handLms)
 
@@ -34,20 +37,66 @@ class hand_detection:
     # will draw hand
     def draw_hand(self, frame, hand_lms):
         # drawing hand dots and connections
-        self.mpDraw.draw_landmarks(frame, hand_lms, self.mpHands.HAND_CONNECTIONS)
+        return self.mpDraw.draw_landmarks(frame, hand_lms, self.mpHands.HAND_CONNECTIONS)
 
     # will give data
     def give_hand_data(self, frame, hand_lms):
         self.handList.clear()
+        h, w, c = frame.shape
+
         for (ID, lm) in enumerate(hand_lms.landmark):
-            h, w, c = frame.shape
             cx, cy = int(lm.x * w), int(lm.y * h)
 
             self.handList.append({
                 "id": ID,
                 "centerX": cx,
-                "centerY": cy
+                "centerY": cy,
             })
+
+    # Will give which finger is up
+    def give_finger_status(self):
+        pointed_fingers = []
+        n_pointed_fingers = []
+
+        # checking if thumb finger is up
+        if self.handList[4]['centerY'] > self.handList[3]['centerY']:
+            n_pointed_fingers.append(4)
+        else:
+            pointed_fingers.append(4)
+
+        # checking if index finger is up
+        if self.handList[8]['centerY'] > self.handList[7]['centerY']:
+            n_pointed_fingers.append(8)
+        else:
+            pointed_fingers.append(8)
+
+        # checking if middle finger is up
+        if self.handList[12]['centerY'] > self.handList[11]['centerY']:
+            n_pointed_fingers.append(12)
+        else:
+            pointed_fingers.append(12)
+
+        # checking if ring finger is up
+        if self.handList[16]['centerY'] > self.handList[15]['centerY']:
+            n_pointed_fingers.append(16)
+        else:
+            pointed_fingers.append(16)
+
+        # checking if pinky finger is up
+        if self.handList[20]['centerY'] > self.handList[19]['centerY']:
+            n_pointed_fingers.append(20)
+        else:
+            pointed_fingers.append(20)
+
+        return pointed_fingers, n_pointed_fingers
+
+    def give_distance(self, axis, finger1_index, finger2_index):
+        if axis == 'x' or axis == 'X':
+            return self.handList[finger1_index]['centerX'] - self.handList[finger2_index]['centerX']
+        elif axis == 'y' or axis == 'Y':
+            return self.handList[finger1_index]['centerY'] - self.handList[finger2_index]['centerY']
+        else:
+            print("Error: invalid axis")
 
 
 def main():
