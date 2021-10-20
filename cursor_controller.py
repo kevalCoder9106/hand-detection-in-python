@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from hand_detector import hand_detection
+from hand_detection import hand_detection
 import autopy
 import os
 
@@ -73,7 +73,7 @@ while True:
 
             pXvalue, pYvalue = cXvalue, cYvalue
             status = 1
-        elif pointed_finger == [] or pointed_finger == [4]:
+        elif pointed_finger == [8, 12] or pointed_finger == [8, 12, 4]:
             # click
             autopy.mouse.click()
             status = 2
