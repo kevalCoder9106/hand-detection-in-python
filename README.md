@@ -1,7 +1,41 @@
-# hand-detection-in-python
 
-hand_detection.py is module made by me(kevalCoder9106) which will give hand data found in input frame or image.
+# Hand Detection, Cursor Controller
 
-hand_detection_test.py is a program which uses hand_detection module to detect hands in camera and draw hand bones.
+Hand Detection program will detect hand from webcam of user.
+Cursor Controller program will give you functionality to control the mouse cursor from tip of your index finger.
+Both programs are writter in Python. And implemented hand detection functionality using Mediapipe model. 
 
-cursor_controller.py is is aprogram which will move mouse based upon users hands index finger movement.
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/kevalCoder9106/hand-detection-in-python
+```
+
+Go to the project directory
+
+```bash
+  cd hand-detection-in-python
+```
+
+Install dependencies
+
+```bash
+  pip install opencv-python
+  pip install mediapipe
+  pip install autopy
+```
+
+Run hand detection program
+
+```bash
+  python hand_detection_test.py
+```
+
+Run cursor controller program
+
+```bash
+  python cursor_controller.py
+```
